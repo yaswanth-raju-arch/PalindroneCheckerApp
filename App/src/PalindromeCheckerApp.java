@@ -2,57 +2,30 @@ import java.util.Scanner;
 
 public class PalindromeCheckerApp {
 
-    // Approach 1: Iterative comparison
-    public static boolean isPalindromeIterative(String str) {
-        int left = 0, right = str.length() - 1;
-        while (left < right) {
-            if (str.charAt(left) != str.charAt(right)) {
-                return false;
-            }
-            left++;
-            right--;
-        }
-        return true;
-    }
-
-    // Approach 2: Using StringBuilder reverse
-    public static boolean isPalindromeReverse(String str) {
-        String reversed = new StringBuilder(str).reverse().toString();
-        return str.equals(reversed);
-    }
-
-    // Approach 3: Recursive method
+    // Recursive method to check palindrome
     public static boolean isPalindromeRecursive(String str, int left, int right) {
-        if (left >= right) return true;
-        if (str.charAt(left) != str.charAt(right)) return false;
+        // Base condition: If left index crosses right, string is a palindrome
+        if (left >= right) {
+            return true;
+        }
+        // If characters at current positions don't match, not a palindrome
+        if (str.charAt(left) != str.charAt(right)) {
+            return false;
+        }
+        // Recursive call: move inward
         return isPalindromeRecursive(str, left + 1, right - 1);
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== Palindrome Checker App - Performance Comparison ===");
+        System.out.println("=== Recursive Palindrome Checker - UC9 ===");
         System.out.print("Enter a string to check: ");
-        String input = scanner.nextLine().replaceAll("\\s+", "").toLowerCase();
+        String input = scanner.nextLine().replaceAll("\\s+", "").toLowerCase(); // ignore spaces and case
 
-        // Iterative
-        long startIterative = System.nanoTime();
-        boolean resultIterative = isPalindromeIterative(input);
-        long endIterative = System.nanoTime();
+        boolean result = isPalindromeRecursive(input, 0, input.length() - 1);
 
-        // Reverse
-        long startReverse = System.nanoTime();
-        boolean resultReverse = isPalindromeReverse(input);
-        long endReverse = System.nanoTime();
-
-        // Recursive
-        long startRecursive = System.nanoTime();
-        boolean resultRecursive = isPalindromeRecursive(input, 0, input.length() - 1);
-        long endRecursive = System.nanoTime();
-
-        System.out.println("\n--- Results ---");
-        System.out.println("Iterative method: " + resultIterative + " | Time: " + (endIterative - startIterative) + " ns");
-        System.out.println("Reverse method: " + resultReverse + " | Time: " + (endReverse - startReverse) + " ns");
-        System.out.println("Recursive method: " + resultRecursive + " | Time: " + (endRecursive - startRecursive) + " ns");
+        System.out.println("\nResult: The string \"" + input + "\" is " +
+                (result ? "a palindrome." : "not a palindrome."));
     }
 }
