@@ -1,42 +1,26 @@
 import java.util.Scanner;
 
-public class PalindromeCheckerApp {
+// 🔹 Palindrome Service Class (Encapsulated Logic)
+class PalindromeChecker {
 
-    // 🔹 Node class definition
-    static class Node {
-        char data;
-        Node next;
+    // Public method exposed to outside world
+    public boolean checkPalindrome(String input) {
 
-        Node(char data) {
-            this.data = data;
-            this.next = null;
+        if (input == null) {
+            return false;
         }
-    }
 
-    // 🔹 Method to reverse linked list
-    public static Node reverseList(Node head) {
-        Node prev = null;
-        Node current = head;
-
-        while (current != null) {
-            Node nextNode = current.next;
-            current.next = prev;
-            prev = current;
-            current = nextNode;
-        }
-        return prev;
-    }
-
-    // 🔹 String palindrome (UC10)
-    public static boolean isPalindrome(String input) {
+        // Normalize string (ignore spaces and case)
         String normalized = input.replaceAll("\\s+", "").toLowerCase();
-        char[] charArray = normalized.toCharArray();
+
+        // Internal Data Structure: Character Array
+        char[] characters = normalized.toCharArray();
 
         int left = 0;
-        int right = charArray.length - 1;
+        int right = characters.length - 1;
 
         while (left < right) {
-            if (charArray[left] != charArray[right]) {
+            if (characters[left] != characters[right]) {
                 return false;
             }
             left++;
@@ -45,50 +29,27 @@ public class PalindromeCheckerApp {
 
         return true;
     }
+}
 
-    // 🔹 Linked List palindrome
-    public static boolean isPalindrome(Node head) {
-        if (head == null || head.next == null) {
-            return true;
-        }
-
-        Node slow = head;
-        Node fast = head;
-
-        while (fast.next != null && fast.next.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        Node secondHalf = reverseList(slow.next);
-        Node firstHalf = head;
-        Node tempSecond = secondHalf;
-
-        boolean result = true;
-
-        while (tempSecond != null) {
-            if (firstHalf.data != tempSecond.data) {
-                result = false;
-                break;
-            }
-            firstHalf = firstHalf.next;
-            tempSecond = tempSecond.next;
-        }
-
-        slow.next = reverseList(secondHalf); // Restore list
-        return result;
-    }
+// 🔹 Main Application Class
+public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== UC10: Case-Insensitive & Space-Ignored Palindrome Checker ===");
+        System.out.println("=== UC11: Object-Oriented Palindrome Service ===");
         System.out.print("Enter a string: ");
 
         String input = scanner.nextLine();
 
-        if (isPalindrome(input)) {
-            System.out.println("Result: The given string is a Palindrome (Ignoring spaces and case).");
+        // Create object of PalindromeChecker
+        PalindromeChecker palindromeChecker = new PalindromeChecker();
+
+        boolean result = palindromeChecker.checkPalindrome(input);
+
+        if (result) {
+            System.out.println("Result: The given string is a Palindrome.");
         } else {
             System.out.println("Result: The given string is NOT a Palindrome.");
         }
